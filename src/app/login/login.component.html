@@ -22,27 +22,103 @@
         <div
           class="w-full max-w-lg p-6 pt-10 mt-5 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 md:py-10"
         >
-          <form class="space-y-6" action="#">
+          <form
+            class="space-y-6"
+            [formGroup]="loginForm"
+            (ngSubmit)="onSubmit()"
+          >
             <mat-form-field appearance="fill" class="w-[100%]">
-              <mat-label>Fill form field</mat-label>
-              <input matInput placeholder="Placeholder" />
-              <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+              <mat-label>Email</mat-label>
+              <input matInput formControlName="email" />
+              <mat-icon matSuffix>email</mat-icon>
+              <div
+                *ngIf="
+                  loginForm.get('email')?.invalid &&
+                  loginForm.get('email')?.touched
+                "
+              ></div>
             </mat-form-field>
+            <div
+              *ngIf="
+                loginForm.get('email')?.invalid &&
+                loginForm.get('email')?.touched
+              "
+            >
+              <p
+                class="text-red-400"
+                *ngIf="loginForm.get('email')?.hasError('required')"
+              >
+                Email is required.
+              </p>
+              <p
+                class="text-red-400 py-1"
+                *ngIf="loginForm.get('email')?.hasError('email')"
+              >
+                Enter a valid email.
+              </p>
+            </div>
 
             <mat-form-field appearance="fill" class="w-[100%]">
-              <mat-label>Fill form field</mat-label>
-              <input matInput placeholder="Placeholder" />
-              <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+              <mat-label>Password</mat-label>
+              <input
+                formControlName="password"
+                matInput
+                [type]="hide ? 'password' : 'text'"
+              />
+              <button
+                mat-icon-button
+                type="button"
+                matSuffix
+                (click)="clickEvent($event)"
+                [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="hide"
+              >
+                <mat-icon>{{
+                  hide ? "visibility_off" : "visibility"
+                }}</mat-icon>
+              </button>
             </mat-form-field>
+            <div
+              *ngIf="
+                loginForm.get('password')?.invalid &&
+                loginForm.get('password')?.touched
+              "
+            >
+              <p
+                class="text-red-400"
+                *ngIf="loginForm.get('password')?.hasError('required')"
+              >
+                Password is required.
+              </p>
+              <p
+                class="text-red-400 py-1"
+                *ngIf="loginForm.get('password')?.hasError('minlength')"
+              >
+                Password should have a minum of 6 caracters.
+              </p>
+            </div>
 
-            <button mat-flat-button class="w-[100%] rounded-sm" color="primary">
-              Primary
+            <button
+              mat-flat-button
+              class="w-[100%] rounded-sm bg-[#9a4f2f]"
+              color="primary"
+              type="submit"
+              [disabled]="!loginForm.valid"
+            >
+              Login
             </button>
+
+            <div *ngIf="errorMessage" class="text-red-400 my-2">
+              {{ errorMessage }}
+            </div>
+            <div *ngIf="loading" class="text-center">
+              <mat-spinner />
+            </div>
 
             <div class="text-sm font-medium text-gray-500 dark:text-gray-300">
               Not registered?
               <a
-                href="#"
+                routerLink="/register"
                 class="text-blue-700 hover:underline dark:text-blue-500"
                 >Create account</a
               >
