@@ -31,12 +31,6 @@
               <mat-label>Email</mat-label>
               <input matInput formControlName="email" />
               <mat-icon matSuffix>email</mat-icon>
-              <div
-                *ngIf="
-                  loginForm.get('email')?.invalid &&
-                  loginForm.get('email')?.touched
-                "
-              ></div>
             </mat-form-field>
             <div
               *ngIf="

@@ -1,0 +1,108 @@
+<h2 mat-dialog-title>Add Book</h2>
+
+<form class="space-y-6" [formGroup]="bookForm" (ngSubmit)="onSubmit()">
+  <mat-dialog-content class="">
+    <mat-form-field appearance="fill" class="w-[100%]">
+      <mat-label>Title</mat-label>
+      <input matInput formControlName="title" />
+    </mat-form-field>
+
+    <div
+      class="w-[100%]"
+      *ngIf="bookForm.get('title')?.invalid && bookForm.get('title')?.touched"
+    >
+      <p
+        class="text-red-400 w-[100%]"
+        *ngIf="bookForm.get('title')?.hasError('required')"
+      >
+        Title is required.
+      </p>
+    </div>
+    <mat-form-field appearance="fill" class="w-[100%]">
+      <mat-label>Author</mat-label>
+      <input matInput formControlName="author" />
+    </mat-form-field>
+
+    <div
+      class="w-[100%]"
+      *ngIf="bookForm.get('author')?.invalid && bookForm.get('author')?.touched"
+    >
+      <p
+        class="text-red-400 w-[100%]"
+        *ngIf="bookForm.get('author')?.hasError('required')"
+      >
+        Author is required.
+      </p>
+    </div>
+
+    <mat-form-field class="w-[100%] mt-1">
+      <mat-label>Choose a date</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="date" />
+      <mat-hint>MM/DD/YYYY</mat-hint>
+      <mat-datepicker-toggle
+        matIconSuffix
+        [for]="picker"
+      ></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <div *ngIf="bookForm.get('date')?.invalid && bookForm.get('date')?.touched">
+      <p
+        class="text-red-400"
+        *ngIf="bookForm.get('date')?.hasError('required')"
+      >
+        Date is required.
+      </p>
+    </div>
+    <br />
+
+    <mat-form-field class="w-[100%] mt-1">
+      <mat-label>Tags</mat-label>
+      <mat-chip-grid #chipGrid aria-label="Enter fruits">
+        @for (tag of tags; track tag) {
+        <mat-chip-row
+          (removed)="remove(tag)"
+          [editable]="true"
+          (edited)="edit(tag, $event)"
+          [aria-description]="'press enter to edit ' + tag.name"
+        >
+          {{ tag.name }}
+          <button matChipRemove [attr.aria-label]="'remove ' + tag.name">
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </mat-chip-row>
+        }
+        <input
+          placeholder="New tag..."
+          [matChipInputFor]="chipGrid"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          [matChipInputAddOnBlur]="addOnBlur"
+          (matChipInputTokenEnd)="add($event)"
+        />
+      </mat-chip-grid>
+    </mat-form-field>
+
+    <div class="form-group mt-1">
+      <label class="text-bold" for="file">Select Cover image (optional)</label>
+      <br />
+      <input type="file" id="file" (change)="onFileChange($event)" />
+    </div>
+  </mat-dialog-content>
+
+  <div *ngIf="loading" class="text-center">
+    <mat-spinner />
+  </div>
+
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button
+      mat-button
+      [mat-dialog-close]="true"
+      type="submit"
+      [disabled]="!bookForm.valid"
+      cdkFocusInitial
+    >
+      Add book
+    </button>
+  </mat-dialog-actions>
+</form>

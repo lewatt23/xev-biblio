@@ -37,7 +37,6 @@ export class LoginComponent {
   hide = true;
   errorMessage: string | undefined = undefined;
   loading: boolean = false;
-
   loginForm: FormGroup;
 
   constructor(private fb: FormBuilder) {

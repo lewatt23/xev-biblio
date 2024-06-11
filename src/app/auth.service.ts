@@ -1,17 +1,21 @@
 import { inject, Injectable } from '@angular/core';
 import {
   Auth,
+  // authState,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
+  // User,
 } from '@angular/fire/auth';
+// import { AngularFireAuth } from '@angular/fire/compat/auth';
+// import { Subscription } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   private auth: Auth = inject(Auth);
-  constructor() {}
+  // angularFireAuth = inject(AngularFireAuth);
 
   // Register a new user
   async register(email: string, password: string) {

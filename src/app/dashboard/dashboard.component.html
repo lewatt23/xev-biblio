@@ -1,189 +1,53 @@
 <app-header></app-header>
 
-<section class="bg-gray-200">
-  <div class="container- mx-10 py-5">
-    <div class="flex justify-between items-center">
-      <div class=""><h1 class="text-2xl">Livros mais buscados.</h1></div>
+<section class="bg-gray-200 h-screen">
+  <div class="container mx-auto py-5">
+    <div class="flex justify-between items-center px-2 md:px-0">
+      <div class=""><h1 class="text-2xl">My books</h1></div>
 
       <div class="">
-        <button mat-flat-button class="w-[100%] rounded-sm" color="primary">
-          Ver Todos
-        </button>
-      </div>
-    </div>
-
-    <div class="grid md:grid-cols-4 grid-cols-1 my-10">
-      <div>
-        <div class="max-w-[20rem] rounded overflow-hidden">
-          <img
-            class="w-full rounded-md"
-            src="/assets/images/Livro3.png"
-            alt="Sunset in the mountains"
-          />
-          <div class="px-6 py-4">
-            <div class="font-bold text-xl mb-2">The Coldest Sunset</div>
-          </div>
-        </div>
         <button
           mat-flat-button
-          class="w-[100%] rounded-sm mt-4"
+          (click)="openDialog()"
+          class="w-[100%] rounded-sm"
           color="primary"
         >
-          Ver Todos
+          Add a new Book
         </button>
       </div>
     </div>
+    <br />
 
     <mat-divider class="mt-10"></mat-divider>
     <div class="my-10">
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div>
-          <div class="max-w-[20rem] rounded overflow-hidden">
-            <img
-              class="w-full rounded-md"
-              src="/assets/images/Livro3.png"
-              alt="Sunset in the mountains"
-            />
-            <div class="px-6 py-4">
-              <div class="font-bold text-xl mb-2">The Coldest Sunset</div>
-              <p class="text-gray-700 text-base">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-              </p>
-            </div>
+      <div class="flex justify-center items-center">
+        <!-- Ensure the grid is centered -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div class="flex flex-col items-center">
+            <!-- Center content of each grid item -->
+            <div class="max-w-[20rem] rounded overflow-hidden">
+              <img
+                class="w-1/2 rounded-md mx-auto"
+                src="/assets/images/Livro3.png"
+                alt="Sunset in the mountains"
+              />
+              <div class="px-6 py-4 pb-2 text-center">
+                <!-- Center text -->
+                <div class="font-bold text-xl mb-2">The Coldest Sunset</div>
+                <p class="text-gray-700 text-base">
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                </p>
+              </div>
 
-            <div class="px-6 pt-2 pb-2">
-              <mat-icon
-                aria-hidden="false"
-                aria-label="Example home icon"
-                fontIcon="star"
-                color="primary"
-                class="inline-block"
-              ></mat-icon>
-              <mat-icon
-                aria-hidden="false"
-                aria-label="Example home icon"
-                fontIcon="star"
-                color="primary"
-                class="inline-block"
-              ></mat-icon>
-              <mat-icon
-                aria-hidden="false"
-                aria-label="Example home icon"
-                fontIcon="star"
-                color="primary"
-                class="inline-block"
-              ></mat-icon>
-              <mat-icon
-                aria-hidden="false"
-                aria-label="Example home icon"
-                fontIcon="star"
-                color="primary"
-                class="inline-block"
-              ></mat-icon>
-              <mat-icon
-                aria-hidden="false"
-                aria-label="Example home icon"
-                fontIcon="star"
-                color="primary"
-                class="inline-block"
-              ></mat-icon>
-            </div>
-            <div class="px-6 pt-4 pb-2">
-              <span
-                class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
-                >#photography</span
-              >
-              <span
-                class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
-                >#travel</span
-              >
-              <span
-                class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
-                >#winter</span
-              >
+              <div class="px-6 pt-1 pb-2 text-center">
+                <!-- Center tags -->
+                <span
+                  class="inline-block bg-gray-200 rounded-full px-3 py-1 text-gray-700 mr-2 mb-2 text-sm"
+                  >#photography</span
+                >
+              </div>
             </div>
           </div>
-          <button
-            mat-flat-button
-            class="w-[100%] rounded-sm mt-4"
-            color="primary"
-          >
-            Ver Todos
-          </button>
-        </div>
-        <div>
-          <div class="max-w-[20rem] rounded overflow-hidden shadow-lg">
-            <img
-              class="w-full"
-              src="/assets/images/Livro3.png"
-              alt="Sunset in the mountains"
-            />
-            <div class="px-6 py-4">
-              <div class="font-bold text-xl mb-2">The Coldest Sunset</div>
-              <p class="text-gray-700 text-base">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-              </p>
-            </div>
-
-            <div class="px-6 pt-2 pb-2">
-              <mat-icon
-                aria-hidden="false"
-                aria-label="Example home icon"
-                fontIcon="star"
-                color="primary"
-                class="inline-block"
-              ></mat-icon>
-              <mat-icon
-                aria-hidden="false"
-                aria-label="Example home icon"
-                fontIcon="star"
-                color="primary"
-                class="inline-block"
-              ></mat-icon>
-              <mat-icon
-                aria-hidden="false"
-                aria-label="Example home icon"
-                fontIcon="star"
-                color="primary"
-                class="inline-block"
-              ></mat-icon>
-              <mat-icon
-                aria-hidden="false"
-                aria-label="Example home icon"
-                fontIcon="star"
-                color="primary"
-                class="inline-block"
-              ></mat-icon>
-              <mat-icon
-                aria-hidden="false"
-                aria-label="Example home icon"
-                fontIcon="star"
-                color="primary"
-                class="inline-block"
-              ></mat-icon>
-            </div>
-            <div class="px-6 pt-4 pb-2">
-              <span
-                class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
-                >#photography</span
-              >
-              <span
-                class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
-                >#travel</span
-              >
-              <span
-                class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
-                >#winter</span
-              >
-            </div>
-          </div>
-          <button
-            mat-flat-button
-            class="w-[100%] rounded-sm mt-4"
-            color="primary"
-          >
-            Ver Todos
-          </button>
         </div>
       </div>
     </div>
