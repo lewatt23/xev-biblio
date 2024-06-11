@@ -1,4 +1,6 @@
-<h2 mat-dialog-title>Add Book</h2>
+<h2 mat-dialog-title>
+  {{ editBook?.id ? "Edit Item" : "Add Item" }}
+</h2>
 
 <form class="space-y-6" [formGroup]="bookForm" (ngSubmit)="onSubmit()">
   <mat-dialog-content class="">
@@ -89,6 +91,9 @@
     </div>
   </mat-dialog-content>
 
+  <div *ngIf="errorMessage" class="text-red-400 my-2">
+    {{ errorMessage }}
+  </div>
   <div *ngIf="loading" class="text-center">
     <mat-spinner />
   </div>
@@ -97,12 +102,11 @@
     <button mat-button mat-dialog-close>Cancel</button>
     <button
       mat-button
-      [mat-dialog-close]="true"
       type="submit"
       [disabled]="!bookForm.valid"
       cdkFocusInitial
     >
-      Add book
+      {{ editBook?.id ? "Edit Item" : "Add Item" }}
     </button>
   </mat-dialog-actions>
 </form>

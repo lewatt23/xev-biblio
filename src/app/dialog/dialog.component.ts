@@ -1,11 +1,14 @@
-import { Component, inject } from '@angular/core';
-import { MatDialogModule } from '@angular/material/dialog';
+import { Component, Inject, inject } from '@angular/core';
+import {
+  MAT_DIALOG_DATA,
+  MatDialogModule,
+  MatDialogRef,
+} from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import {
-  AbstractControlOptions,
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
@@ -22,10 +25,17 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
-import { minTagCountValidator } from '../register/custom.validator';
+import { AuthService } from '../auth.service';
+import { BookService } from '../book.service';
+import { Book } from '../model/book.model';
+import moment from 'moment';
 
 export interface Tag {
   name: string;
+}
+
+export interface DialogId {
+  id: string;
 }
 
 @Component({
@@ -49,16 +59,25 @@ export interface Tag {
   styleUrl: './dialog.component.css',
 })
 export class DialogComponent {
+  private authService: AuthService = inject(AuthService);
+  private bookservice: BookService = inject(BookService);
+
   errorMessage: string | undefined = undefined;
   loading: boolean = false;
   bookForm: FormGroup;
   file: File | undefined;
+  imageUrl: string | null = null;
+  editBook: Book = new Book({});
 
   addOnBlur = true;
   readonly separatorKeysCodes = [ENTER, COMMA] as const;
   tags: Tag[] = [];
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    public dialogRef: MatDialogRef<DialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogId
+  ) {
     this.bookForm = this.fb.group({
       title: ['', [Validators.required]],
       date: ['', [Validators.required]],
@@ -66,6 +85,33 @@ export class DialogComponent {
       tags: [''],
       imageUrl: [''],
     });
+
+    if (data?.id) {
+      this.bookservice.getBook(data.id).subscribe({
+        next: (book: Book) => {
+          const editTags: any[] = book.tags.map((item) => ({
+            name: item,
+          }));
+          this.tags = editTags;
+          const date = '2023-20-12';
+
+          // Format the date as "YYYY-MM-DD"
+          // const formattedDate = date.format('YYYY-MM-DD');
+
+          this.editBook = book;
+          this.bookForm.setValue({
+            tags: book.tags,
+            title: book.title,
+            date: date,
+            author: book.author,
+            imageUrl: book.imageUrl,
+          });
+        },
+        error: (error) => {
+          console.error('Error fetching books:', error);
+        },
+      });
+    }
   }
 
   announcer = inject(LiveAnnouncer);
@@ -113,9 +159,54 @@ export class DialogComponent {
   }
 
   onSubmit(): void {
-    if (this.bookForm.valid) {
-      // do something
+    if (!this.bookForm.valid) {
+      console.log('Error in form submission', this.bookForm.errors);
+      return;
+    }
+
+    this.loading = true;
+
+    const handleSuccess = () => {
+      this.dialogRef.close();
+      this.loading = false;
+    };
+
+    const handleError = (error: any) => {
+      this.errorMessage = error;
+      this.loading = false;
+      console.error('Operation failed:', error);
+    };
+
+    const updateBookDetails = (imageUrl?: string) => {
+      const formValue = {
+        ...this.bookForm.value,
+        imageUrl: imageUrl || this.bookForm.value.imageUrl,
+      };
+
+      const book = new Book({
+        ...formValue,
+        userId: this.editBook?.userId || 'hbHfb85ds4hGQwtEBQTIVF5iQoy2',
+        id: this.editBook?.id || null,
+        tags: this.tags.map((t) => t.name),
+      });
+
+      const operation = book.id
+        ? this.bookservice.updateBook(book.id, book)
+        : this.bookservice.createBook(book);
+
+      operation.then(handleSuccess).catch(handleError);
+    };
+
+    if (this.file) {
+      this.bookservice.uploadImage(this.file).subscribe({
+        next: (url) => updateBookDetails(String(url)),
+        error: (err) => {
+          console.error('Upload error:', err);
+          handleError('Failed to upload file.');
+        },
+      });
     } else {
+      updateBookDetails();
     }
   }
 }

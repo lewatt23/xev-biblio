@@ -1,11 +1,17 @@
-import { CanActivateFn } from '@angular/router';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { inject } from '@angular/core';
-// import { AuthService } from './auth.service';
+import { Router } from '@angular/router';
+import { map, tap } from 'rxjs/operators';
 
-export const AuthGuard: CanActivateFn = async (route, state) => {
-  //   const angularFireAuth = inject(AuthService);
-  //   const user = await angularFireAuth.angularFireAuth.user;
-  // coerce to boolean
-  //   const isLoggedIn = !!user;
-  return true;
+export const authGuard = () => {
+  const afAuth = inject(AngularFireAuth);
+  const router = inject(Router);
+  return afAuth.authState.pipe(
+    map((user) => !!user), // Convert user presence to a boolean (true if user exists)
+    tap((loggedIn) => {
+      if (!loggedIn) {
+        router.navigate(['/login']); // Redirect to login if not logged in
+      }
+    })
+  );
 };

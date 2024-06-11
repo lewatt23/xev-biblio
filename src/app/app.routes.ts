@@ -2,9 +2,22 @@ import { Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-// import { AuthGuard } from './auth.guard';
+import {
+  redirectUnauthorizedTo,
+  canActivate,
+  AuthPipe,
+  emailVerified,
+  isNotAnonymous,
+  AuthPipeGenerator,
+  hasCustomClaim,
+} from '@angular/fire/auth-guard';
 
+const redirectUnauthorizedToLogin: AuthPipeGenerator = () =>
+  redirectUnauthorizedTo(['/login']);
+
+const adminOnly = () => hasCustomClaim('admin');
 export const routes: Routes = [
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
   {
     path: 'login',
     component: LoginComponent,
@@ -12,14 +25,12 @@ export const routes: Routes = [
   {
     path: 'register',
     component: RegisterComponent,
-    // canActivate: [AuthGuard],
   },
   {
     path: 'dashboard',
     component: DashboardComponent,
+
+    ...canActivate(redirectUnauthorizedToLogin),
   },
-  {
-    path: '*',
-    component: LoginComponent,
-  },
+  { path: '**', redirectTo: 'login' },
 ];

@@ -1,6 +1,6 @@
 <app-header></app-header>
 
-<section class="bg-gray-200 h-screen">
+<section class="bg-gray-200 min-h-screen">
   <div class="container mx-auto py-5">
     <div class="flex justify-between items-center px-2 md:px-0">
       <div class=""><h1 class="text-2xl">My books</h1></div>
@@ -23,31 +23,57 @@
       <div class="flex justify-center items-center">
         <!-- Ensure the grid is centered -->
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <div class="flex flex-col items-center">
+          @for (book of books; track $index) {
+
+          <div class="flex flex-col items-center pb-4">
             <!-- Center content of each grid item -->
-            <div class="max-w-[20rem] rounded overflow-hidden">
+            <div class="max-w-[20rem] rounded overflow-hidden relative">
               <img
-                class="w-1/2 rounded-md mx-auto"
-                src="/assets/images/Livro3.png"
+                class="min-w-1/2 rounded-md mx-auto"
+                [src]="book.imageUrl"
                 alt="Sunset in the mountains"
               />
+
               <div class="px-6 py-4 pb-2 text-center">
                 <!-- Center text -->
-                <div class="font-bold text-xl mb-2">The Coldest Sunset</div>
+                <div class="font-bold text-md mb-2">{{ book.title }}</div>
                 <p class="text-gray-700 text-base">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                  Date: {{ formateDate(book.date) }}
+                </p>
+                <p class="text-gray-700 text-base">
+                  Arthur : {{ book.author }}
                 </p>
               </div>
 
               <div class="px-6 pt-1 pb-2 text-center">
                 <!-- Center tags -->
+                @for (tag of book.tags; track $index) {
                 <span
-                  class="inline-block bg-gray-200 rounded-full px-3 py-1 text-gray-700 mr-2 mb-2 text-sm"
-                  >#photography</span
+                  class="inline-block bg-gray-200 rounded-full px-1 py-1 text-gray-700 mr-2 mb-2 text-sm"
                 >
+                  #{{ tag }}
+                </span>
+                }
+              </div>
+
+              <div class="flex justify-center space-x-2">
+                <button
+                  (click)="edit(book?.id)"
+                  class="bg-blue-500 hover:bg-blue-700 text-white font-light py-1 px-2 rounded"
+                >
+                  Edit
+                </button>
+                <button
+                  type="button"
+                  (click)="delete(book?.id)"
+                  class="bg-red-500 hover:bg-red-700 text-white font-light py-2 px-4 rounded"
+                >
+                  Delete
+                </button>
               </div>
             </div>
           </div>
+          }
         </div>
       </div>
     </div>
