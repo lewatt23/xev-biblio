@@ -1,5 +1,5 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
-import { Tag } from '../dialog/dialog.component';
+import { Tag } from '../components/dialog/dialog.component';
 
 export const PasswordValidator: ValidatorFn = (
   control: AbstractControl

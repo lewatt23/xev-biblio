@@ -1,14 +1,13 @@
-import { AuthService } from './../auth.service';
+import { AuthService } from '../core/services/auth/auth.service';
 import { Component, inject } from '@angular/core';
-import { HeaderComponent } from '../header/header.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { DialogComponent } from '../dialog/dialog.component';
-import { BookService } from '../book.service';
-import { Book } from '../model/book.model';
+import { DialogComponent } from '../components/dialog/dialog.component';
+import { BookService } from '../core/services/book/book.service';
+import { Book } from '../core/model/book.model';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -16,7 +15,6 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [
     CommonModule,
-    HeaderComponent,
     MatButtonModule,
     MatIconModule,
     MatListModule,
@@ -29,7 +27,7 @@ import { CommonModule } from '@angular/common';
 })
 export class DashboardComponent {
   private bookservice: BookService = inject(BookService);
-  private authService: AuthService = inject(AuthService);
+  authService: AuthService = inject(AuthService);
 
   constructor(public dialog: MatDialog) {}
   books: Book[] = [];

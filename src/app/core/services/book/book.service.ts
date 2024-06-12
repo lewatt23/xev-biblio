@@ -1,7 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import {
   CollectionReference,
-  DocumentReference,
   Firestore,
   addDoc,
   collection,
@@ -14,7 +13,7 @@ import {
   where,
 } from '@angular/fire/firestore';
 import { Observable, from, map, of, switchMap, tap } from 'rxjs';
-import { Book } from './model/book.model';
+import { Book } from '../../model/book.model';
 import {
   Storage,
   getDownloadURL,
@@ -22,12 +21,14 @@ import {
   uploadBytesResumable,
 } from '@angular/fire/storage';
 import { Auth, User, authState } from '@angular/fire/auth';
+import { environment } from '../../../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BookService {
-  private dbPath = '/books';
+  private dbPath = environment.dbPath;
+
   booksRef: CollectionReference<Book>;
   auth = inject(Auth);
   state = authState(this.auth);
@@ -45,10 +46,10 @@ export class BookService {
     }
 
     delete book.id;
-    // return addDoc(this.booksRef, Object.assign({}, book));
+
     return from(addDoc(this.booksRef, Object.assign({}, book))).pipe(
       tap(() => console.log('Document added')),
-      switchMap(() => this.getAllBooksByUser()) // This must return Observable<Book[]>
+      switchMap(() => this.getAllBooksByUser())
     );
   }
 
@@ -102,7 +103,6 @@ export class BookService {
     const filePath = `images/${Date.now()}_${file.name}`;
     const fileRef = ref(this.storage, filePath);
 
-    // Return an Observable that emits the download URL after the upload completes
     return from(
       uploadBytesResumable(fileRef, file).then(() => getDownloadURL(fileRef))
     );

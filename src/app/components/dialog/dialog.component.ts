@@ -25,8 +25,9 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
-import { BookService } from '../book.service';
-import { Book } from '../model/book.model';
+import { BookService } from '../../core/services/book/book.service';
+import { Book } from '../../core/model/book.model';
+import { AuthService } from '../../core/services/auth/auth.service';
 
 export interface Tag {
   name: string;
@@ -58,6 +59,7 @@ export interface DialogId {
 })
 export class DialogComponent {
   private bookservice: BookService = inject(BookService);
+  private authservice: AuthService = inject(AuthService);
 
   errorMessage: string | undefined = undefined;
   loading: boolean = false;
@@ -178,7 +180,7 @@ export class DialogComponent {
 
       const book = new Book({
         ...formValue,
-        userId: this.editBook?.userId,
+        userId: this.authservice.user?.uid || '',
         id: this.editBook?.id || null,
         tags: this.tags.map((t) => t.name),
       });

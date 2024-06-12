@@ -12,4 +12,6 @@ export const environment = {
 
     appId: '1:1030893153811:web:903288281ecd53021199e6',
   },
+
+  dbPath: '/books',
 };
