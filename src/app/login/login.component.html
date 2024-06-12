@@ -17,7 +17,7 @@
           Xev Bilbio
         </h1>
         <h2 class="text-center mt-5 text-xl font-bold text-[#9a4f2f]">
-          Save your best books and memories at once
+          Save your favorite books and cherished memories.
         </h2>
         <h3 class="text-center text-lg mt-2">Login Below</h3>
 
@@ -50,7 +50,7 @@
                 class="text-red-400 py-1"
                 *ngIf="loginForm.get('email')?.hasError('email')"
               >
-                Enter a valid email.
+                Please enter a valid email address.
               </p>
             </div>
 
@@ -90,7 +90,7 @@
                 class="text-red-400 py-1"
                 *ngIf="loginForm.get('password')?.hasError('minlength')"
               >
-                Password should have a minum of 6 caracters.
+                Password should have a minimum of 6 characters.
               </p>
             </div>
 
@@ -108,15 +108,15 @@
               {{ errorMessage }}
             </div>
             <div *ngIf="loading" class="text-center">
-              <mat-spinner />
+              <mat-spinner style="margin: 0 auto" [diameter]="40" />
             </div>
 
             <div class="text-sm font-medium text-gray-500 dark:text-gray-300">
-              Not registered?
+              Not registered yet?
               <a
                 routerLink="/register"
                 class="text-blue-700 hover:underline dark:text-blue-500"
-                >Create account</a
+                >Create Account</a
               >
             </div>
           </form>

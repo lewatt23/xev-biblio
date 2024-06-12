@@ -1,5 +1,5 @@
 <h2 mat-dialog-title>
-  {{ editBook?.id ? "Edit Item" : "Add Item" }}
+  {{ this.editBook.id ? "Edit Item" : "Add Item" }}
 </h2>
 
 <form class="space-y-6" [formGroup]="bookForm" (ngSubmit)="onSubmit()">
@@ -87,7 +87,12 @@
     <div class="form-group mt-1">
       <label class="text-bold" for="file">Select Cover image (optional)</label>
       <br />
-      <input type="file" id="file" (change)="onFileChange($event)" />
+      <input
+        type="file"
+        accept="image/*"
+        id="file"
+        (change)="onFileChange($event)"
+      />
     </div>
   </mat-dialog-content>
 
@@ -117,7 +122,7 @@
       [disabled]="!bookForm.valid"
       cdkFocusInitial
     >
-      {{ editBook?.id ? "Edit Item" : "Add Item" }}
+      {{ this.editBook.id ? "Edit Item" : "Add Item" }}
     </button>
   </mat-dialog-actions>
 </form>

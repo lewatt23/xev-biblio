@@ -1,27 +1,28 @@
 # XevBiblio
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.0.3.
+XevBiblio is a simple CRUD (Create, Read, Update, Delete) web application designed for managing bookshelves. Built with Angular 18 and Firebase, it allows users to interactively manage their book collections.
 
-## Development server
+## Features
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+- **Create**: Add new books to your bookshelf.
+- **Read**: View a list of books on your bookshelf.
+- **Update**: Modify details of books in your bookshelf.
+- **Delete**: Remove books from your bookshelf.
 
-## Code scaffolding
+## Prerequisites
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Before you begin, ensure you have met the following requirements:
 
-## Build
+- Node.js and npm installed (https://nodejs.org/)
+- Angular CLI installed (`npm install -g @angular/cli`)
+- Docker installed (for development and production environment setup) (https://www.docker.com/get-started)
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Running the Application
 
-## Running unit tests
+To run XevBiblio locally, use the following command:
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+```bash
 
-## Running end-to-end tests
+ng serve
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+```
