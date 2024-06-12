@@ -25,10 +25,8 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../auth.service';
 import { BookService } from '../book.service';
 import { Book } from '../model/book.model';
-import moment from 'moment';
 
 export interface Tag {
   name: string;
@@ -59,7 +57,6 @@ export interface DialogId {
   styleUrl: './dialog.component.css',
 })
 export class DialogComponent {
-  private authService: AuthService = inject(AuthService);
   private bookservice: BookService = inject(BookService);
 
   errorMessage: string | undefined = undefined;
@@ -93,16 +90,12 @@ export class DialogComponent {
             name: item,
           }));
           this.tags = editTags;
-          const date = '2023-20-12';
-
-          // Format the date as "YYYY-MM-DD"
-          // const formattedDate = date.format('YYYY-MM-DD');
 
           this.editBook = book;
           this.bookForm.setValue({
             tags: book.tags,
             title: book.title,
-            date: date,
+            date: book.date,
             author: book.author,
             imageUrl: book.imageUrl,
           });
@@ -185,7 +178,7 @@ export class DialogComponent {
 
       const book = new Book({
         ...formValue,
-        userId: this.editBook?.userId || 'hbHfb85ds4hGQwtEBQTIVF5iQoy2',
+        userId: this.editBook?.userId,
         id: this.editBook?.id || null,
         tags: this.tags.map((t) => t.name),
       });

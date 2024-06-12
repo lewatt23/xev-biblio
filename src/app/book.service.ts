@@ -13,7 +13,7 @@ import {
   updateDoc,
   where,
 } from '@angular/fire/firestore';
-import { Observable, finalize, from, switchMap, tap } from 'rxjs';
+import { Observable, from, map, of, switchMap, tap } from 'rxjs';
 import { Book } from './model/book.model';
 import {
   Storage,
@@ -21,6 +21,7 @@ import {
   ref,
   uploadBytesResumable,
 } from '@angular/fire/storage';
+import { Auth, User, authState } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root',
@@ -28,6 +29,8 @@ import {
 export class BookService {
   private dbPath = '/books';
   booksRef: CollectionReference<Book>;
+  auth = inject(Auth);
+  state = authState(this.auth);
 
   constructor(private firestore: Firestore, private storage: Storage) {
     this.booksRef = collection(
@@ -41,12 +44,11 @@ export class BookService {
       throw new Error('Validation failed');
     }
 
-    console.log('book', Object.assign({}, book));
     delete book.id;
     // return addDoc(this.booksRef, Object.assign({}, book));
     return from(addDoc(this.booksRef, Object.assign({}, book))).pipe(
       tap(() => console.log('Document added')),
-      switchMap(() => this.getAllBooksByUser(book.userId)) // This must return Observable<Book[]>
+      switchMap(() => this.getAllBooksByUser()) // This must return Observable<Book[]>
     );
   }
 
@@ -62,12 +64,38 @@ export class BookService {
 
   getBook(id: string): Observable<Book> {
     const bookDocRef = doc(this.firestore, this.dbPath, id);
-    return docData(bookDocRef, { idField: 'id' }) as Observable<Book>;
+    return docData(bookDocRef, { idField: 'id' }).pipe(
+      map(
+        (book: any) =>
+          ({
+            ...book,
+            date: new Date(book.date.seconds * 1000),
+          } as Book)
+      )
+    );
   }
 
-  getAllBooksByUser(userId: string): Observable<Book[]> {
-    const booksQuery = query(this.booksRef, where('userId', '==', userId));
-    return collectionData(booksQuery, { idField: 'id' }) as Observable<Book[]>;
+  getAllBooksByUser(): Observable<Book[]> {
+    return this.state.pipe(
+      switchMap((user: User) => {
+        if (!user) {
+          return of([]);
+        }
+        const booksQuery = query(
+          this.booksRef,
+          where('userId', '==', user.uid)
+        );
+        return collectionData(booksQuery, { idField: 'id' }).pipe(
+          map(
+            (books: any) =>
+              books.map((book: any) => ({
+                ...book,
+                date: book.date ? new Date(book.date.seconds * 1000) : null,
+              })) as Book[]
+          )
+        );
+      })
+    );
   }
 
   uploadImage(file: File) {

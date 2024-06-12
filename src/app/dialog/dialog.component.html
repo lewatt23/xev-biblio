@@ -91,11 +91,22 @@
     </div>
   </mat-dialog-content>
 
+  <div class="text-center">
+    @if (!!this.editBook.imageUrl ) {
+    <img
+      class="w-24 h-24 mx-auto rounded-2xl shadow-lg ml-24"
+      [src]="this.editBook.imageUrl"
+      alt="Bonnie image"
+    />
+
+    }
+  </div>
+
   <div *ngIf="errorMessage" class="text-red-400 my-2">
     {{ errorMessage }}
   </div>
   <div *ngIf="loading" class="text-center">
-    <mat-spinner />
+    <mat-spinner style="margin: 0 auto" [diameter]="40" />
   </div>
 
   <mat-dialog-actions align="end">

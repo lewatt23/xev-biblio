@@ -1,81 +1,179 @@
-<app-header></app-header>
+<button
+  data-drawer-target="default-sidebar"
+  data-drawer-toggle="default-sidebar"
+  aria-controls="default-sidebar"
+  type="button"
+  class="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+>
+  <span class="sr-only">Open sidebar</span>
+  <svg
+    class="w-6 h-6"
+    aria-hidden="true"
+    fill="currentColor"
+    viewBox="0 0 20 20"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      clip-rule="evenodd"
+      fill-rule="evenodd"
+      d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"
+    ></path>
+  </svg>
+</button>
 
-<section class="bg-gray-200 min-h-screen">
-  <div class="container mx-auto py-5">
-    <div class="flex justify-between items-center px-2 md:px-0">
-      <div class=""><h1 class="text-2xl">My books</h1></div>
-
-      <div class="">
-        <button
-          mat-flat-button
-          (click)="openDialog()"
-          class="w-[100%] rounded-sm"
-          color="primary"
+<aside
+  id="default-sidebar"
+  class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
+  aria-label="Sidebar"
+>
+  <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
+    <ul class="space-y-2 font-medium">
+      <li>
+        <a
+          class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
         >
-          Add a new Book
+          <svg
+            class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="currentColor"
+            viewBox="0 0 22 21"
+          >
+            <path
+              d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z"
+            />
+            <path
+              d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z"
+            />
+          </svg>
+          <span class="ms-3">Dashboard Hello </span>
+        </a>
+      </li>
+
+      <li>
+        <button
+          type="button"
+          (click)="logout()"
+          class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+        >
+          <svg
+            class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 18 16"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M1 8h11m0 0L8 4m4 4-4 4m4-11h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-3"
+            />
+          </svg>
+          <span class="flex-1 ms-3 whitespace-nowrap">Sign Out</span>
         </button>
-      </div>
-    </div>
-    <br />
+      </li>
+    </ul>
+  </div>
+</aside>
 
-    <mat-divider class="mt-10"></mat-divider>
-    <div class="my-10">
-      <div class="flex justify-center items-center">
-        <!-- Ensure the grid is centered -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-          @for (book of books; track $index) {
+<div class="sm:ml-64">
+  <div class="">
+    <div class="p-8">
+      <div class="flex justify-between items-center px-2 md:px-0">
+        <div class=""><h1 class="text-2xl">My books</h1></div>
 
-          <div class="flex flex-col items-center pb-4">
-            <!-- Center content of each grid item -->
-            <div class="max-w-[20rem] rounded overflow-hidden relative">
-              <img
-                class="min-w-1/2 rounded-md mx-auto"
-                [src]="book.imageUrl"
-                alt="Sunset in the mountains"
-              />
-
-              <div class="px-6 py-4 pb-2 text-center">
-                <!-- Center text -->
-                <div class="font-bold text-md mb-2">{{ book.title }}</div>
-                <p class="text-gray-700 text-base">
-                  Date: {{ formateDate(book.date) }}
-                </p>
-                <p class="text-gray-700 text-base">
-                  Arthur : {{ book.author }}
-                </p>
-              </div>
-
-              <div class="px-6 pt-1 pb-2 text-center">
-                <!-- Center tags -->
-                @for (tag of book.tags; track $index) {
-                <span
-                  class="inline-block bg-gray-200 rounded-full px-1 py-1 text-gray-700 mr-2 mb-2 text-sm"
-                >
-                  #{{ tag }}
-                </span>
-                }
-              </div>
-
-              <div class="flex justify-center space-x-2">
-                <button
-                  (click)="edit(book?.id)"
-                  class="bg-blue-500 hover:bg-blue-700 text-white font-light py-1 px-2 rounded"
-                >
-                  Edit
-                </button>
-                <button
-                  type="button"
-                  (click)="delete(book?.id)"
-                  class="bg-red-500 hover:bg-red-700 text-white font-light py-2 px-4 rounded"
-                >
-                  Delete
-                </button>
-              </div>
-            </div>
-          </div>
-          }
+        <div class="">
+          <button
+            mat-flat-button
+            (click)="openDialog()"
+            class="w-[100%] rounded-sm px-10"
+            color="primary"
+          >
+            Add a new Book
+          </button>
         </div>
       </div>
     </div>
+    @if (books.length > 0) {
+    <div class="grid grid-cols-1 md:grid-cols-4 p-8 gap-4 mb-4">
+      @for (book of books; track $index) {
+      <div class="items-center justify-center rounded">
+        <div class="w-full max-w-sm bg-[#f5f5ff] rounded-2xl">
+          <div class="flex justify-end px-4 pt-4"></div>
+          <div class="flex flex-col items-center pb-10">
+            @if (!!book.imageUrl ) {
+            <img
+              class="w-64 h-72 mb-3 rounded-2xl shadow-lg"
+              [src]="book.imageUrl"
+              alt="Bonnie image"
+            />
+
+            }@else {
+
+            <img
+              class="w-64 h-72 mb-3 rounded-2xl shadow-lg"
+              src="/assets/images/login.png"
+              alt="Bonnie image"
+            />
+
+            }
+            <h5 class="mb-1 text-xl font-medium text-black">
+              {{ book.title }}
+            </h5>
+            <span class="text-sm text-gray-500 dark:text-gray-400">{{
+              book.author
+            }}</span>
+            <div>
+              @for (tag of book.tags; track $index) {
+              <span
+                class="text-gray-500 text-xs mt-2 font-medium me-2 px-2.5 py-0.5 rounded bg-gray-200 border border-gray-500"
+                >#{{ tag }}</span
+              >
+              }
+            </div>
+            <p class="text-gray-500 mt-5 text-sm">
+              {{ book.date | date : "dd/MM/yyyy" }}
+            </p>
+            <div class="flex mt-4 md:mt-6">
+              <button
+                (click)="edit(book?.id)"
+                class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300"
+              >
+                Edit
+              </button>
+              <button
+                type="button"
+                (click)="delete(book?.id)"
+                class="py-2 px-4 ms-2 text-sm font-medium text-red-500 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      }
+    </div>
+    } @else {
+    <div class="">
+      <div
+        class="flex flex-col items-center justify-center md:flex-row md:justify-around md:items-start pt-10"
+      >
+        <div>
+          <h2 class="text-center mt-5 text-xl font-bold text-[#9a4f2f]">
+            You have not added any book
+          </h2>
+          <img
+            src="/assets/images/login.png"
+            class="md:max-w-2xl max-w-sm lg:max-w-5xl"
+            alt="loginbg"
+          />
+        </div>
+      </div>
+    </div>
+    }
   </div>
-</section>
+</div>

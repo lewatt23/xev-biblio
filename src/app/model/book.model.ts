@@ -3,7 +3,7 @@ import { Tag } from './tag.model';
 export class Book {
   id?: string;
   title: string;
-  date: Date | { seconds: number; nanoseconds: number };
+  date: Date;
   author: string;
   tags: Tag[];
   imageUrl?: string;

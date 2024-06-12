@@ -11,7 +11,12 @@ import {
   Validators,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import {
+  Router,
+  RouterLink,
+  RouterLinkActive,
+  RouterOutlet,
+} from '@angular/router';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
@@ -34,6 +39,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 })
 export class LoginComponent {
   private authService: AuthService = inject(AuthService);
+  private router: Router = inject(Router);
   hide = true;
   errorMessage: string | undefined = undefined;
   loading: boolean = false;
@@ -56,6 +62,7 @@ export class LoginComponent {
         .login(this.loginForm.value.email, this.loginForm.value.password)
         .then((user) => {
           this.loading = false;
+          this.router.navigate(['/dashboard']);
         })
         .catch((error) => {
           this.errorMessage = error;

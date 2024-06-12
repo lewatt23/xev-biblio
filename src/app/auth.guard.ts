@@ -1,17 +1,17 @@
-import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { map, tap } from 'rxjs/operators';
+import { Auth, User, authState } from '@angular/fire/auth';
 
 export const authGuard = () => {
-  const afAuth = inject(AngularFireAuth);
+  const afAuth = inject(Auth);
+  const state = authState(afAuth);
   const router = inject(Router);
-  return afAuth.authState.pipe(
-    map((user) => !!user), // Convert user presence to a boolean (true if user exists)
-    tap((loggedIn) => {
-      if (!loggedIn) {
-        router.navigate(['/login']); // Redirect to login if not logged in
-      }
-    })
-  );
+
+  state.subscribe((aUser: User | null) => {
+    if (!aUser) {
+      router.navigate(['/login']);
+    } else {
+      router.navigate(['/dashboard']);
+    }
+  });
 };

@@ -12,3 +12,18 @@ body {
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.mdc-notched-outline__notch {
+  border-right: none;
+}
+
+.mat-mdc-unelevated-button {
+  border-radius: 5px !important;
+  padding: 1.5rem 1rem !important;
+}
+
+.book-header .mat-mdc-form-field-bottom-align::before {
+  content: "";
+  display: none;
+  height: 0px;
+}

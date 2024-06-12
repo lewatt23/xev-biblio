@@ -1,3 +1,4 @@
+import { AuthService } from './../auth.service';
 import { Component, inject } from '@angular/core';
 import { HeaderComponent } from '../header/header.component';
 import { MatButtonModule } from '@angular/material/button';
@@ -9,12 +10,7 @@ import { DialogComponent } from '../dialog/dialog.component';
 import { BookService } from '../book.service';
 import { Book } from '../model/book.model';
 import { CommonModule } from '@angular/common';
-import moment from 'moment';
 
-interface FirestoreTimestamp {
-  seconds: number;
-  nanoseconds: number;
-}
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -33,15 +29,14 @@ interface FirestoreTimestamp {
 })
 export class DashboardComponent {
   private bookservice: BookService = inject(BookService);
+  private authService: AuthService = inject(AuthService);
 
   constructor(public dialog: MatDialog) {}
   books: Book[] = [];
   openDialog() {
     const dialogRef = this.dialog.open(DialogComponent);
 
-    dialogRef.afterClosed().subscribe((result) => {
-      // console.log(`Dialog result: ${result}`);
-    });
+    dialogRef.afterClosed().subscribe((result) => {});
   }
 
   delete(id: string | undefined) {
@@ -54,24 +49,18 @@ export class DashboardComponent {
     });
   }
 
-  formateDate(timeStamp: any) {
-    const date = moment.unix(timeStamp.seconds);
-
-    // Format the date as "YYYY-MM-DD"
-    const formattedDate = date.format('YYYY-MM-DD');
-    return formattedDate;
+  logout() {
+    this.authService.logout();
   }
 
   ngOnInit(): void {
-    this.bookservice
-      .getAllBooksByUser('hbHfb85ds4hGQwtEBQTIVF5iQoy2') // Assuming user ID or some identifier would go here
-      .subscribe({
-        next: (books) => {
-          this.books = books;
-        },
-        error: (error) => {
-          console.error('Error fetching books:', error);
-        },
-      });
+    this.bookservice.getAllBooksByUser().subscribe({
+      next: (books) => {
+        this.books = books;
+      },
+      error: (error) => {
+        console.error('Error fetching books:', error);
+      },
+    });
   }
 }
